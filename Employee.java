@@ -27,6 +27,7 @@ public class Employee
 			idsind++;
 			//fazer algo pra printar no data set ambos ids
 		}
+		return idsind;
 	}
 
 	public void setName(String name)
@@ -34,7 +35,7 @@ public class Employee
 		this.name = name;
 	}
 
-	public String getName(String name)
+	public String getName()
 	{
 		return name;
 	}
