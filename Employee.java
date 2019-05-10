@@ -2,7 +2,7 @@ public class Employee
 {
 	public String name, address, type, payway, salary;
 	public double sindfee;
-	public int id, idsind;
+	public int id = 0;
 	//public String entry_time;
 	//public String exit_time;
 	public double hours;
@@ -15,19 +15,15 @@ public class Employee
 		this.salary = salary;
 	}
 
-	public int addEmployee(String name, String address, String type, String salary, String payway, String sindic, double sindfee)
+	public void addEmployee(String name, String address, String type, String salary) //String payway, String sindic, double sindfee)
 	{
-		this.name = name;
-		this.address = address;
-		this.type = type;
-		this.salary = salary;
 		id++;
-		if(sindic == "yes")
-		{
-			idsind++;
-			//fazer algo pra printar no data set ambos ids
-		}
-		return idsind;
+		// if(sindic == "yes")
+		// {
+		// 	idsind++;
+		// 	//fazer algo pra printar no data set ambos ids
+		// }
+		System.out.printf("Seu id sera %d",getId());//sind;
 	}
 
 	public void setName(String name)
@@ -38,6 +34,16 @@ public class Employee
 	public String getName()
 	{
 		return name;
+	}
+
+	public String getType()
+	{
+		return type;
+	}
+
+	public int getId()
+	{
+		return id;
 	}
 
 	public double frequencyCard(int id, double hours)
