@@ -4,10 +4,11 @@ public class Program
 {
 	public static void main(String[] args)
 	{
-		//int id = 0;
+		int id = 0;
 		int idsind = 0;
 		int option;
-		String auxname, auxaddress, auxtype, auxsalary;
+		String auxname, auxaddress, auxtype, auxsalary, auxsind;
+		double auxsindfee;
 
 		Scanner input = new Scanner(System.in);
 
@@ -19,7 +20,7 @@ public class Program
 
 		if(option == 1)
 		{
-			System.out.println("Please type the name and press enter:");
+			System.out.printf("Please type the name and press enter:");
 			auxname = input.nextLine();
 			System.out.printf("Please type the address and press enter:");
 			auxaddress = input.nextLine();
@@ -27,9 +28,13 @@ public class Program
 			auxtype = input.nextLine();
 			System.out.printf("Please type the salary and press enter:");
 			auxsalary = input.nextLine();
-			employeeArray[0] = new Employee(auxname, auxaddress, auxtype, auxsalary);
-			System.out.printf("the employee %s", employeeArray[0].getType());
-			employeeArray[0].addEmployee(auxname, auxaddress, auxtype, auxsalary);
+			System.out.printf("Please type yes if the employee want to be part of the sindicate and press enter:");
+			auxsind = input.nextLine();
+			System.out.printf("Please type the sindical fee and press enter:");
+			auxsindfee = input.nextDouble();
+			employeeArray[id] = new Employee(auxname, auxaddress, auxtype, auxsalary, auxsind, auxsindfee);
+			System.out.printf("the employee %s", employeeArray[id].getType());
+			employeeArray[id].addEmployee(auxname, auxaddress, auxtype, auxsalary, auxsind, auxsindfee);
 		}
 
 		// Employee[1] = input.nextLine();

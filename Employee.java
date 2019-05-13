@@ -1,21 +1,23 @@
 public class Employee
 {
-	public String name, address, type, payway, salary;
+	public String name, address, type, payway, salary, sindic;
 	public double sindfee;
-	public int id = 0;
+	public int id;
 	//public String entry_time;
 	//public String exit_time;
 	public double hours;
 
-	public Employee(String name, String address, String type, String salary)
+	public Employee(String name, String address, String type, String salary, String sindic, double sindfee)
 	{
 		this.name = name;
 		this.address = address;
 		this.type = type;
 		this.salary = salary;
+		this.sindic = sindic;
+		this.sindfee = sindfee;
 	}
 
-	public void addEmployee(String name, String address, String type, String salary) //String payway, String sindic, double sindfee)
+	public void addEmployee(String name, String address, String type, String salary, String sindic, double sindfee)
 	{
 		id++;
 		// if(sindic == "yes")
@@ -23,7 +25,7 @@ public class Employee
 		// 	idsind++;
 		// 	//fazer algo pra printar no data set ambos ids
 		// }
-		System.out.printf("Seu id sera %d",getId());//sind;
+		System.out.printf("Seu id sera %d",id);//sind;
 	}
 
 	public void setName(String name)
@@ -54,6 +56,7 @@ public class Employee
 
 	public void seller(int id, String date, double value, double percentage)
 	{
+		//total = totalsal + value*percentage/100;
 		return;
 	}
 
