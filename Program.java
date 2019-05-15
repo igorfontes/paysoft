@@ -2,48 +2,145 @@ import java.util.Scanner;
 
 public class Program
 {
+	static int auxid;
+	static int id = 0;
+	static int idsind = 0;
+	static String[] name = new String[50];
+	static String[] address = new String[50];
+	static String[] type = new String[50];
+	static String[] payway = new String[50];
+	static String[] sind = new String[50]; // sind is yes or no
+	static Double[] sindfee = new Double[50];
+	static Double[] salary = new Double[50];
+	static String[] date = new String[50]; 
+	static Double[] hours = new Double[50];
+	// for(i=1;i<=50;i++){
+	// 	salary[i] = 0;
+	// }
+
+	static Scanner input = new Scanner(System.in);
+
+	static void addEmployee()
+	{
+		id++;
+		System.out.printf("Please type the name and press enter:");
+		name[id] = input.nextLine();
+		System.out.printf("Please type the address and press enter:");
+		address[id] = input.nextLine();
+		System.out.printf("Please type the type and press enter:");
+		type[id] = input.nextLine();
+		System.out.printf("Please type the payway and press enter:");
+		payway[id] = input.nextLine();
+		System.out.printf("Please type yes if the employee want to be part of the sindicate and press enter:");
+		sind[id] = input.nextLine();
+		System.out.printf("Please type the sindical fee and press enter:");
+		sindfee[id] = input.nextDouble();
+		// if(sindic == "yes")//DANDO ERRADO
+		// {
+		// 	idsind++;
+		// 	System.out.printf("Seu id no sindicato sera %d",idsind);
+		// }
+		// if(sindic!="yes")
+		// {
+		// 	System.out.printf("Voce nao faz parte do sindicato!");
+		// }
+		System.out.printf("Seu id sera %d",id);
+		//System.out.printf("Seu id sera %s",type[id]);
+	}
+
+	// public String getName()
+	// {
+	// 	return name;
+	// }
+
+	// public String getType()
+	// {
+	// 	return type;
+	// }
+
+	// public int getId()
+	// {
+	// 	return id;
+	// }
+
+	static void frequencyCard()
+	{
+		System.out.printf("Please type the date and press enter:");
+		date[id] = input.nextLine();
+		System.out.printf("Please type the id and press enter:");
+		auxid = input.nextInt();
+		System.out.printf("Please type the amount of hours worked and press enter:");
+		hours[id] = input.nextDouble();		
+		if(hours[id] > 8)
+		{
+			salary[id] = 400 + (hours[id]-8)*75; //considering 50 reals per worked hour
+		} else {
+			salary[id] = 50*hours[id];
+		}
+		System.out.printf("Seu salario ate agora e %.2f",salary[id]);
+	}
+
+	// public void seller(int id, String date, double value, double percentage)
+	// {
+	// 	//total = totalsal + value*percentage/100;
+	// 	return;
+	// }
+
+	// public void extraFee(int id, double extrafee)
+	// {
+	// 	return;
+	// }
+
+	// public void changedata(String name, String address, String type, String payway, String sindic, double sindfee)
+	// {
+	// 	return;
+	// }
+
+	// public void paysheet(String date)
+	// {
+	// 	return;
+	// }
+
+	// public void undo()
+	// {
+	// 	return;
+	// }
+
+	// public void redo()
+	// {
+	// 	return;
+	// }
+
+	// public void defineAgenda(int id, String paytime)
+	// {
+	// 	return;
+	// }
+
+	// public void newAgenda(String newpaytime)
+	// {
+	// 	return;
+	// }
 	public static void main(String[] args)
 	{
-		int id = 0;
-		int idsind = 0;
+		
 		int option;
-		String auxname, auxaddress, auxtype, auxsalary, auxsind;
-		double auxsindfee;
-
-		Scanner input = new Scanner(System.in);
-
-		//Employee employee = new Employee("Igor", "Clim", "hourl", "total");
-		Employee[] employeeArray = new Employee[100];
 
 		System.out.printf("Please type 1 and press enter to add an employee:");
 		option = input.nextInt();
 
 		if(option == 1)
+		{	
+			addEmployee();
+		}
+		if(option == 2)
 		{
-			System.out.printf("Please type the name and press enter:");
-			auxname = input.nextLine();
-			System.out.printf("Please type the address and press enter:");
-			auxaddress = input.nextLine();
-			System.out.printf("Please type the type and press enter:");
-			auxtype = input.nextLine();
-			System.out.printf("Please type the salary and press enter:");
-			auxsalary = input.nextLine();
-			System.out.printf("Please type yes if the employee want to be part of the sindicate and press enter:");
-			auxsind = input.nextLine();
-			System.out.printf("Please type the sindical fee and press enter:");
-			auxsindfee = input.nextDouble();
-			employeeArray[id] = new Employee(auxname, auxaddress, auxtype, auxsalary, auxsind, auxsindfee);
-			System.out.printf("the employee %s", employeeArray[id].getType());
-			employeeArray[id].addEmployee(auxname, auxaddress, auxtype, auxsalary, auxsind, auxsindfee);
+			frequencyCard();
 		}
 
-		// Employee[1] = input.nextLine();
-
-		// System.out.println("Please enter the type of Employee:");
-		// Employee[2] = input.nextLine();
-
-		// System.out.println("Please enter the salary condition:");
-		// Employee[3] = input.nextLine();
+		// if(option==2)
+		// {
+		// 	frequencyCard(date, id, hours);
+		// }
 
 	}
 }
