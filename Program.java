@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class Program
 {
+	static Double value, percentage;
 	static int auxid;
 	static int id = 0;
 	static int idsind = 0;
@@ -70,21 +71,28 @@ public class Program
 		System.out.printf("Please type the id and press enter:");
 		auxid = input.nextInt();
 		System.out.printf("Please type the amount of hours worked and press enter:");
-		hours[id] = input.nextDouble();		
-		if(hours[id] > 8)
+		hours[auxid] = input.nextDouble();		
+		if(hours[auxid] > 8)
 		{
-			salary[id] = 400 + (hours[id]-8)*75; //considering 50 reals per worked hour
+			salary[auxid] = 400 + (hours[auxid]-8)*75; //consauxidering 50 reals per worked hour
 		} else {
-			salary[id] = 50*hours[id];
+			salary[auxid] = 50*hours[auxid];
 		}
-		System.out.printf("Seu salario ate agora e %.2f",salary[id]);
+		System.out.printf("Seu salario ate agora e %.2f",salary[auxid]);
 	}
 
-	// public void seller(int id, String date, double value, double percentage)
-	// {
-	// 	//total = totalsal + value*percentage/100;
-	// 	return;
-	// }
+	static void seller()
+	{
+		System.out.printf("Please type the id and press enter:");
+		auxid = input.nextInt();
+		System.out.printf("Please type the date and press enter:\n");
+		date[auxid] = input.nextLine();
+		System.out.printf("Please type the value of the selling and press enter:");
+		value = input.nextDouble();
+		System.out.printf("Please type the percentage and press enter:");
+		percentage = input.nextDouble();
+		salary[auxid]+=(value*percentage/100);
+	}
 
 	// public void extraFee(int id, double extrafee)
 	// {
@@ -132,15 +140,14 @@ public class Program
 		{	
 			addEmployee();
 		}
-		if(option == 2)
+		if(option == 3)
 		{
 			frequencyCard();
 		}
-
-		// if(option==2)
-		// {
-		// 	frequencyCard(date, id, hours);
-		// }
+		if(option == 4)
+		{
+			seller();
+		}
 
 	}
 }
