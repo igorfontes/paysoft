@@ -4,14 +4,16 @@ public class Program
 {
 	static Double value, percentage;
 	static int auxid;
+	static int auxoption;
 	static int id = 0;
-	static int idsind = 0;
+	static int auxidsind = 0;
 	static String[] name = new String[50];
 	static String[] address = new String[50];
 	static String[] type = new String[50];
 	static String[] payway = new String[50];
-	static String[] sind = new String[50]; // sind is yes or no
+	static int[] sind = new int[50]; // sind is yes 1 or no 0
 	static Double[] sindfee = new Double[50];
+	static int[] idsind = new int[50];
 	static Double[] salary = new Double[50];
 	static String[] date = new String[50]; 
 	static Double[] hours = new Double[50];
@@ -24,7 +26,7 @@ public class Program
 	static void addEmployee()
 	{
 		id++;
-		System.out.printf("Please type the name and press enter:");
+		System.out.print("Please type the name and press enter:\n");
 		name[id] = input.nextLine();
 		System.out.printf("Please type the address and press enter:");
 		address[id] = input.nextLine();
@@ -32,21 +34,17 @@ public class Program
 		type[id] = input.nextLine();
 		System.out.printf("Please type the payway and press enter:");
 		payway[id] = input.nextLine();
-		System.out.printf("Please type yes if the employee want to be part of the sindicate and press enter:");
-		sind[id] = input.nextLine();
-		System.out.printf("Please type the sindical fee and press enter:");
-		sindfee[id] = input.nextDouble();
-		// if(sindic == "yes")//DANDO ERRADO
-		// {
-		// 	idsind++;
-		// 	System.out.printf("Seu id no sindicato sera %d",idsind);
-		// }
-		// if(sindic!="yes")
-		// {
-		// 	System.out.printf("Voce nao faz parte do sindicato!");
-		// }
-		System.out.printf("Seu id sera %d",id);
-		//System.out.printf("Seu id sera %s",type[id]);
+		System.out.printf("Please type 1 if the employee want to be part of the sindicate else 0 and press enter:");
+		sind[id] = input.nextInt();
+		if(sind[id] == 1){
+			System.out.printf("Please type the sindical fee and press enter:");
+			sindfee[id] = input.nextDouble();
+			auxidsind++;
+			idsind[id] = auxidsind;
+			System.out.printf("Seu id no sindicato sera %d\n",idsind[id]);
+		}
+		System.out.printf("Seu id na empresa sera %d\n\n",id);
+		//System.out.printf("Seu id  sera %s",type[id]);
 	}
 
 	// public String getName()
@@ -99,10 +97,47 @@ public class Program
 	// 	return;
 	// }
 
-	// public void changedata(String name, String address, String type, String payway, String sindic, double sindfee)
-	// {
-	// 	return;
-	// }
+	static void changeData()
+	{
+		System.out.printf("Please type the employee's id:");
+		auxid = input.nextInt();
+		auxoption = 1;
+		while(auxoption != 8){
+			System.out.printf("Please choose one of the options below:\n");
+			System.out.printf("1 - change name\n2 - change address\n3 - change type of employee\n4 - change payway\n5 - change sindicate state\n6 - change sindicate id\n7 - change sindicate fee\n8 - exit");
+			auxoption = input.nextInt();
+			if(auxoption == 1){
+				System.out.printf("Please type the new name:\n");
+				name[id] = input.nextLine();
+			}
+			if(auxoption == 2){
+				System.out.printf("Please type the new address:\n");
+				address[id] = input.nextLine();
+			}
+			if(auxoption == 3){
+				System.out.printf("Please type the new type of employee:\n");
+				type[id] = input.nextLine();
+			}
+			if(auxoption == 4){
+				System.out.printf("Please type the new payway:\n");
+				payway[id] = input.nextLine();
+			}
+			if(auxoption == 5){
+				System.out.printf("Please type the new sindicate state(type yes to include the employee to the sindicate and no to remove):\n");
+				sind[id] = input.nextInt();
+			}
+			if(auxoption == 6){
+				System.out.printf("Please type the new idsind:\n");
+				name[id] = input.nextLine(); //AJEITAR ISSO AQUI, NAO ENTENDI
+			}
+			if(auxoption == 7){
+				System.out.printf("Please type the new sindical fee:\n");
+				sindfee[id] = input.nextDouble();
+			}
+
+		}
+		return;
+	}
 
 	// public void paysheet(String date)
 	// {
@@ -131,22 +166,35 @@ public class Program
 	public static void main(String[] args)
 	{
 		
-		int option;
+		int option = 1;
 
-		System.out.printf("Please type 1 and press enter to add an employee:");
-		option = input.nextInt();
+		while(true){
 
-		if(option == 1)
-		{	
-			addEmployee();
-		}
-		if(option == 3)
-		{
-			frequencyCard();
-		}
-		if(option == 4)
-		{
-			seller();
+			System.out.printf("Please type one of the options below:\n1 - add employee\n2 - remove employee\n3 - set frequency card\n4 - add a selling\n5 - add a service fee\n6 - change data of an employee\n7 - update paysheet and pay employees\n8 - undo\n9 - redo\n10 - set up payment agenda\n11 - create new agenda\n12 - exit\n");
+
+			option = input.nextInt();
+
+			if(option == 1)
+			{	
+				addEmployee();
+			}
+			if(option == 3)
+			{
+				frequencyCard();
+			}
+			if(option == 4)
+			{
+				seller();
+			}
+			if(option == 6)
+			{
+				changeData();
+			}
+			if(option == 12)
+			{
+				break;
+			}
+
 		}
 
 	}
