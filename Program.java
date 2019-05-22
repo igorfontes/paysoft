@@ -1,7 +1,9 @@
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class Program
 {
+	static LocalDate localdate;
 	static Double value, percentage;
 	static int auxid;
 	static int auxoption;
@@ -139,10 +141,14 @@ public class Program
 		return;
 	}
 
-	// public void paysheet(String date)
-	// {
-	// 	return;
-	// }
+	static void paysheet(int year, int month, int dayOfMonth)
+	{
+		localDate = LocalDate(year, month, dayOfMonth);
+		if(localDate.getDayOfWeek().ordinal() == 4){
+			return;
+		}
+		return;
+	}
 
 	// public void undo()
 	// {
@@ -167,11 +173,12 @@ public class Program
 	{
 		
 		int option = 1;
+		System.out.println(localdate);
 
 		while(true){
 
 			System.out.printf("Please type one of the options below:\n1 - add employee\n2 - remove employee\n3 - set frequency card\n4 - add a selling\n5 - add a service fee\n6 - change data of an employee\n7 - update paysheet and pay employees\n8 - undo\n9 - redo\n10 - set up payment agenda\n11 - create new agenda\n12 - exit\n");
-
+		
 			option = input.nextInt();
 
 			if(option == 1)
