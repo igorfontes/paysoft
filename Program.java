@@ -3,7 +3,11 @@ import java.time.LocalDate;
 
 public class Program
 {
-	static LocalDate localdate;
+	static int i;
+	static Double extrafee;
+	static int contfriday = 0;
+	static int year, month, day;
+	static LocalDate localdate; //= LocalDate.now();
 	static Double value, percentage;
 	static int auxid;
 	static int auxoption;
@@ -28,7 +32,8 @@ public class Program
 	static void addEmployee()
 	{
 		id++;
-		System.out.print("Please type the name and press enter:\n");
+		System.out.print("Please type the name and press enter:");
+		input.nextLine();
 		name[id] = input.nextLine();
 		System.out.printf("Please type the address and press enter:");
 		address[id] = input.nextLine();
@@ -67,6 +72,7 @@ public class Program
 	static void frequencyCard()
 	{
 		System.out.printf("Please type the date and press enter:");
+		input.nextLine();
 		date[id] = input.nextLine();
 		System.out.printf("Please type the id and press enter:");
 		auxid = input.nextInt();
@@ -74,11 +80,11 @@ public class Program
 		hours[auxid] = input.nextDouble();		
 		if(hours[auxid] > 8)
 		{
-			salary[auxid] = 400 + (hours[auxid]-8)*75; //consauxidering 50 reals per worked hour
+			salary[auxid] = 400 + (hours[auxid]-8)*75; //considering 50 reals per worked hour
 		} else {
 			salary[auxid] = 50*hours[auxid];
 		}
-		System.out.printf("Seu salario ate agora e %.2f",salary[auxid]);
+		System.out.printf("Seu salario ate agora e %.2f\n",salary[auxid]);
 	}
 
 	static void seller()
@@ -94,10 +100,14 @@ public class Program
 		salary[auxid]+=(value*percentage/100);
 	}
 
-	// public void extraFee(int id, double extrafee)
-	// {
-	// 	return;
-	// }
+	static void extraFee()
+	{
+		System.out.printf("Please type the id and press enter:");
+		auxid = input.nextInt();
+		System.out.printf("Please type the service fee and press enter:");
+		extrafee = input.nextDouble();
+		salary[auxid]-=extrafee;
+	}
 
 	static void changeData()
 	{
@@ -141,10 +151,41 @@ public class Program
 		return;
 	}
 
-	static void paysheet(int year, int month, int dayOfMonth)
+	static void paysheet()
 	{
-		localDate = LocalDate(year, month, dayOfMonth);
-		if(localDate.getDayOfWeek().ordinal() == 4){
+		System.out.println("Please type the currently year:");
+		year = input.nextInt();
+		System.out.println("Please type the currently month:");
+		month = input.nextInt();
+		System.out.println("Please type the currently day:");
+		day = input.nextInt();
+		localdate = LocalDate.of(year,month,day);
+		//the number 4 is for friday
+		//System.out.println(localdate.getDayOfWeek().name());
+		//System.out.println(localdate.getDayOfWeek().ordinal());
+		if(localdate.getDayOfWeek().ordinal() == 4){ // if it is friday, time to pay
+			contfriday++;
+			for(i=1;i<=id;i++){
+				if(type[i].equals("hourly")){
+					System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
+					salary[i] = 0.0;
+					return;
+				}
+				if(type[i].equals("salaried")){
+					System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
+					salary[i] = 0.0;
+					return;
+				}
+				if(type[i].equals("comissioned")){
+					if(contfriday == 2)
+					{
+						System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
+						salary[i] = 0.0;
+						contfriday = 0;
+						return;
+					}
+				}
+			}
 			return;
 		}
 		return;
@@ -173,7 +214,6 @@ public class Program
 	{
 		
 		int option = 1;
-		System.out.println(localdate);
 
 		while(true){
 
@@ -193,9 +233,17 @@ public class Program
 			{
 				seller();
 			}
+			if(option == 5)
+			{
+				extraFee();
+			}
 			if(option == 6)
 			{
 				changeData();
+			}
+			if(option == 7)
+			{
+				paysheet();
 			}
 			if(option == 12)
 			{
