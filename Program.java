@@ -1,5 +1,7 @@
 import java.util.Scanner;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 
 public class Program
 {
@@ -7,7 +9,7 @@ public class Program
 	static Double extrafee;
 	static int contfriday = 0;
 	static int year, month, day;
-	static LocalDate localdate; //= LocalDate.now();
+	static LocalDate localdate, auxdate; //= LocalDate.now();
 	static Double value, percentage;
 	static int auxid;
 	static int auxoption;
@@ -21,6 +23,7 @@ public class Program
 	static Double[] sindfee = new Double[50];
 	static int[] idsind = new int[50];
 	static Double[] salary = new Double[50];
+	static Double[] salaryperhour = new Double[50];
 	static String[] date = new String[50]; 
 	static Double[] hours = new Double[50];
 	// for(i=1;i<=50;i++){
@@ -37,14 +40,25 @@ public class Program
 		name[id] = input.nextLine();
 		System.out.printf("Please type the address and press enter:");
 		address[id] = input.nextLine();
-		System.out.printf("Please type the type and press enter:");
+		System.out.printf("Please type the type(hourly, salaried or comissioned) and press enter:");
 		type[id] = input.nextLine();
-		System.out.printf("Please type the payway and press enter:");
+		if(type[id].equals("hourly")){
+			System.out.printf("Por favor digite o valor do salario por hora trabalhada e pressione enter:");
+			salary[id] = 0.0;
+			salaryperhour[id] = input.nextDouble();
+			input.nextLine();
+		}
+		if(type[id].equals("salaried")){
+			System.out.printf("Por favor digite o valor do salario mensal e pressione enter:");
+			salary[id] = input.nextDouble();
+			input.nextLine();
+		}
+		System.out.printf("Please type the payment method(chequeemmaos, chequeporcorreio, deposito) and press enter:");
 		payway[id] = input.nextLine();
 		System.out.printf("Please type 1 if the employee want to be part of the sindicate else 0 and press enter:");
 		sind[id] = input.nextInt();
 		if(sind[id] == 1){
-			System.out.printf("Please type the sindical fee and press enter:");
+			System.out.printf("Please type the sindical fee(usando virgula) and press enter:");
 			sindfee[id] = input.nextDouble();
 			auxidsind++;
 			idsind[id] = auxidsind;
@@ -54,37 +68,26 @@ public class Program
 		//System.out.printf("Seu id  sera %s",type[id]);
 	}
 
-	// public String getName()
-	// {
-	// 	return name;
-	// }
-
-	// public String getType()
-	// {
-	// 	return type;
-	// }
-
-	// public int getId()
-	// {
-	// 	return id;
-	// }
-
 	static void frequencyCard()
 	{
-		System.out.printf("Please type the date and press enter:");
-		input.nextLine();
-		date[id] = input.nextLine();
+		System.out.println("Please type the current year:");
+		year = input.nextInt();
+		System.out.println("Please type the current month:");
+		month = input.nextInt();
+		System.out.println("Please type the current day:");
+		day = input.nextInt();
+		localdate = LocalDate.of(year,month,day);
 		System.out.printf("Please type the id and press enter:");
 		auxid = input.nextInt();
 		System.out.printf("Please type the amount of hours worked and press enter:");
 		hours[auxid] = input.nextDouble();		
 		if(hours[auxid] > 8)
 		{
-			salary[auxid] = 400 + (hours[auxid]-8)*75; //considering 50 reals per worked hour
+			salary[auxid]+=(salaryperhour[auxid]*8.0+(hours[auxid]-8)*1.5*salaryperhour[auxid]);
 		} else {
-			salary[auxid] = 50*hours[auxid];
+			salary[auxid]+=(salaryperhour[auxid]*hours[auxid]);
 		}
-		System.out.printf("Seu salario ate agora e %.2f\n",salary[auxid]);
+		System.out.printf("Seu salario ate agora e %.2f\n\n",salary[auxid]);
 	}
 
 	static void seller()
@@ -153,13 +156,15 @@ public class Program
 
 	static void paysheet()
 	{
-		System.out.println("Please type the currently year:");
+		System.out.println("Please type the current year:");
 		year = input.nextInt();
-		System.out.println("Please type the currently month:");
+		System.out.println("Please type the current month:");
 		month = input.nextInt();
-		System.out.println("Please type the currently day:");
+		System.out.println("Please type the current day:");
 		day = input.nextInt();
 		localdate = LocalDate.of(year,month,day);
+		//auxdate = localdate.withMonth(5).with(TemporalAdjusters.lastDayOfMonth());
+		//System.out.println(auxdate);
 		//the number 4 is for friday
 		//System.out.println(localdate.getDayOfWeek().name());
 		//System.out.println(localdate.getDayOfWeek().ordinal());
@@ -189,6 +194,16 @@ public class Program
 			return;
 		}
 		return;
+	}
+
+	static void removeEmployee()
+	{
+		name[id] = null;
+		address[id] = null;
+		type[id] = null;
+		payway[id] = null;
+		//sind[id] = null;
+		//idsind[id] = null;
 	}
 
 	// public void undo()
@@ -224,6 +239,10 @@ public class Program
 			if(option == 1)
 			{	
 				addEmployee();
+			}
+			if(option == 1)
+			{	
+				removeEmployee();
 			}
 			if(option == 3)
 			{
