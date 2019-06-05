@@ -11,7 +11,8 @@ public class Program
 	static int year, month, day;
 	static LocalDate localdate, auxdate; //= LocalDate.now();
 	static Double value, percentage;
-	static int auxid;
+	static int auxid, lastday;
+	static Double auxsalary;
 	static int auxoption;
 	static int id = 0;
 	static int auxidsind = 0;
@@ -26,9 +27,14 @@ public class Program
 	static Double[] salaryperhour = new Double[50];
 	static String[] date = new String[50]; 
 	static Double[] hours = new Double[50];
-	// for(i=1;i<=50;i++){
-	// 	salary[i] = 0;
-	// }
+	static String[] agendainterval = new String[50];
+	static int[] agendaday = new int[50];
+	static String[] agendadayweek = new String[50];
+	static int contaseg=0;
+	static int contater=0;
+	static int contaqua=0;
+	static int contaqui=0;
+	static int contasex=0;
 
 	static Scanner input = new Scanner(System.in);
 
@@ -43,14 +49,24 @@ public class Program
 		System.out.printf("Please type the type(hourly, salaried or comissioned) and press enter:");
 		type[id] = input.nextLine();
 		if(type[id].equals("hourly")){
+			agendainterval[id]="semanalmente"; //padrao as sextas
 			System.out.printf("Por favor digite o valor do salario por hora trabalhada e pressione enter:");
 			salary[id] = 0.0;
 			salaryperhour[id] = input.nextDouble();
 			input.nextLine();
 		}
 		if(type[id].equals("salaried")){
-			System.out.printf("Por favor digite o valor do salario mensal e pressione enter:");
+			agendainterval[id]="mensalmente"; //padrao no ultimo dia util
+			System.out.printf("Por favor digite o valor do salario fixo para 2 semanas e pressione enter:");
 			salary[id] = input.nextDouble();
+			auxsalary = salary[id]; // o salario fixo e o mesmo para todos
+			input.nextLine();
+		}
+		if(type[id].equals("comissioned")){
+			agendainterval[id]="bi-semanalmente"; //padrao as sextas
+			System.out.printf("Por favor digite o valor do salario fixo para 2 semanas e pressione enter:");
+			salary[id] = input.nextDouble();
+			auxsalary = salary[id];
 			input.nextLine();
 		}
 		System.out.printf("Please type the payment method(chequeemmaos, chequeporcorreio, deposito) and press enter:");
@@ -163,37 +179,167 @@ public class Program
 		System.out.println("Please type the current day:");
 		day = input.nextInt();
 		localdate = LocalDate.of(year,month,day);
-		//auxdate = localdate.withMonth(5).with(TemporalAdjusters.lastDayOfMonth());
-		//System.out.println(auxdate);
-		//the number 4 is for friday
-		//System.out.println(localdate.getDayOfWeek().name());
-		//System.out.println(localdate.getDayOfWeek().ordinal());
-		if(localdate.getDayOfWeek().ordinal() == 4){ // if it is friday, time to pay
-			contfriday++;
-			for(i=1;i<=id;i++){
-				if(type[i].equals("hourly")){
+		auxdate = localdate.withMonth(month).with(TemporalAdjusters.lastDayOfMonth());
+		lastday = auxdate.getDayOfWeek().ordinal();
+		while(lastday==5 || lastday==6){ //set the auxdate to be the last util day
+			auxdate = auxdate.minusDays(1); 
+			lastday--;
+		}
+		for(i=1;i<=id;i++){
+
+			if(agendainterval[i].equals("mensal$") || agendainterval[i].equals("mensalmente")){
+				if(auxdate.isEqual(localdate)){ 
+					if(sind[i]==1){
+						salary[i]-=sindfee[i];
+					}
 					System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
-					salary[i] = 0.0;
-					return;
-				}
-				if(type[i].equals("salaried")){
-					System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
-					salary[i] = 0.0;
-					return;
-				}
-				if(type[i].equals("comissioned")){
-					if(contfriday == 2)
-					{
-						System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
+					if(type[i].equals("hourly")){ 
 						salary[i] = 0.0;
-						contfriday = 0;
-						return;
+					}
+					if(type[i].equals("salaried") || type[i].equals("comissioned")){
+						salary[i] = 2 * auxsalary;
 					}
 				}
 			}
-			return;
+
+			if(agendainterval[i].equals("mensal")){
+
+				//FALTA DOS OUTROS DIAS
+				if(agendadayweek[i].equals("terca")){
+					if(localdate.getDayOfWeek().ordinal()==1){
+						contasex++;
+						if(contasex%agendaday[i] == agendaday[i]){
+							if(sind[i]==1){
+								salary[i]-=sindfee[i];
+							}
+							System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
+							if(type[i].equals("hourly")){
+								salary[i] = 0.0;
+							}
+							if(type[i].equals("salaried") || type[i].equals("comissioned")){
+								salary[i] = (agendaday[i]*auxsalary/2);
+							}
+						}
+					}
+				}
+
+				if(agendadayweek[i].equals("quarta")){
+					if(localdate.getDayOfWeek().ordinal()==2){
+						contasex++;
+						if(contasex%agendaday[i] == agendaday[i]){
+							if(sind[i]==1){
+								salary[i]-=sindfee[i];
+							}
+							System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
+							if(type[i].equals("hourly")){
+								salary[i] = 0.0;
+							}
+							if(type[i].equals("salaried") || type[i].equals("comissioned")){
+								salary[i] = (agendaday[i]*auxsalary/2);
+							}
+						}
+					}
+				}
+
+				if(agendadayweek[i].equals("quinta")){
+					if(localdate.getDayOfWeek().ordinal()==3){
+						contasex++;
+						if(contasex%agendaday[i] == agendaday[i]){
+							if(sind[i]==1){
+								salary[i]-=sindfee[i];
+							}
+							System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
+							if(type[i].equals("hourly")){
+								salary[i] = 0.0;
+							}
+							if(type[i].equals("salaried") || type[i].equals("comissioned")){
+								salary[i] = (agendaday[i]*auxsalary/2);
+							}
+						}
+					}
+				}
+
+				if(agendadayweek[i].equals("sexta")){
+					if(localdate.getDayOfWeek().ordinal()==4){
+						contasex++;
+						if(contasex%agendaday[i] == agendaday[i]){
+							if(sind[i]==1){
+								salary[i]-=sindfee[i];
+							}
+							System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
+							if(type[i].equals("hourly")){
+								salary[i] = 0.0;
+							}
+							if(type[i].equals("salaried") || type[i].equals("comissioned")){
+								salary[i] = (agendaday[i]*auxsalary/2);
+							}
+						}
+					}
+				}
+
+			}
+
+			if(agendainterval[i].equals("semanal")){
+
+				if(agendaday[i] == day){
+					if(sind[i]==1){
+						salary[i]-=sindfee[i];
+					}
+					System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
+					if(type[i].equals("hourly")){
+						salary[i] = 0.0;
+					}
+					if(type[i].equals("salaried") || type[i].equals("comissioned")){
+						salary[i] = 2 * auxsalary;
+					}
+				}
+
+			}
+
+			if(agendainterval[i].equals("semanalmente") || agendainterval[i].equals("bi-semanalmente")){
+
+				if(localdate.getDayOfWeek().ordinal() == 4){ // if it is friday, time to pay
+					contfriday++;
+					for(i=1;i<=id;i++){
+
+						if(agendainterval[i].equals("semanalmente")){
+							if(sind[i]==1){
+								salary[i]-=sindfee[i];
+							}
+							System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
+							if(type[i].equals("hourly")){
+								salary[i] = 0.0;
+							}
+							if(type[i].equals("salaried") || type[i].equals("comissioned")){
+								salary[i] = auxsalary/2;
+							}
+						}
+
+						if(agendainterval[i].equals("bi-semanalmente")){
+							if(contfriday%2 == 0)
+							{
+								if(sind[i]==1){
+									salary[i]-=sindfee[i];
+								}
+								System.out.printf("The employee with id %d received %.2f reals today\n", i, salary[i]);
+								if(type[i].equals("hourly")){
+									salary[i] = 0.0;
+								}
+								if(type[i].equals("salaried") || type[i].equals("comissioned")){
+									salary[i] = auxsalary;
+								}
+							}
+						}
+
+					}
+			}
+		}
+			
 		}
 		return;
+		//the number 4 is for friday
+		//System.out.println(auxdate.getDayOfWeek().name());
+		//System.out.println(auxdate.getDayOfWeek().ordinal());
 	}
 
 	static void removeEmployee()
@@ -216,10 +362,25 @@ public class Program
 	// 	return;
 	// }
 
-	// public void defineAgenda(int id, String paytime)
-	// {
-	// 	return;
-	// }
+	static void defineAgenda()//o empregado tem conhecimento das novas agendas tbm
+	{
+		System.out.printf("Please type the id and press enter:\n");
+		auxid = input.nextInt();
+		System.out.printf("Please type the payment interval(semanal, mensal ou mensal$ to receive at the last util day of the month) and press enter:\n");
+		agendainterval[auxid] = input.nextLine();
+		if(agendainterval[auxid].equals("mensal")){
+			System.out.printf("Please type the payment day(the number of the day at the month) and press enter:\n");
+			agendaday[auxid] = input.nextInt();
+		}
+		if(agendainterval[auxid].equals("semanal")){
+			System.out.printf("Please type the payment day(the number of the day at the month) and press enter:\n");
+			agendaday[auxid] = input.nextInt();
+			System.out.printf("Please type the payment day of the week and press enter:\n");
+			agendadayweek[auxid] = input.nextLine();
+		}
+
+		return;
+	}
 
 	// public void newAgenda(String newpaytime)
 	// {
@@ -240,7 +401,7 @@ public class Program
 			{	
 				addEmployee();
 			}
-			if(option == 1)
+			if(option == 2)
 			{	
 				removeEmployee();
 			}
@@ -263,6 +424,10 @@ public class Program
 			if(option == 7)
 			{
 				paysheet();
+			}
+			if(option == 10)
+			{
+				defineAgenda();
 			}
 			if(option == 12)
 			{
